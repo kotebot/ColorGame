@@ -11,6 +11,7 @@ public class SpawnSystem : MonoBehaviour {
     public Color32 []poolColors=new Color32[3];
     public SpriteRenderer bg;
 
+
     private float propusk=7f;
     private float k;
     private List<int> array=new List<int>();
@@ -20,12 +21,15 @@ public class SpawnSystem : MonoBehaviour {
    
    
     void Awake () {
-        bg.color = RandomColor();
+ 
         for (int i = 0; i < 3; i++)
         {
-            poolColors[i] = RandomColor();
+            if (i == 0)
+                poolColors[i] = RandomColor();
+            else poolColors[i] = ComplamentaryColor.CompColor(poolColors[i - 1]);
             array.Add(i);
         }
+        bg.color = ComplamentaryColor.CompColor(poolColors[Random.Range(0,3)]);
         instance = this;
         k = 5000/3;
         
@@ -44,9 +48,13 @@ public class SpawnSystem : MonoBehaviour {
 
     public void Spawn()
     {
+        Color32 temp = poolColors[0];
         for (int i = 0; i < 3; i++)
         {
-            poolColors[i] = RandomColor();
+            
+            if (i == 0)
+                poolColors[i] = temp;
+            else poolColors[i] = ComplamentaryColor.CompColor(poolColors[i - 1]);
             array.Add(i);
         }
         for (int j = 0; j < 2; j++)
